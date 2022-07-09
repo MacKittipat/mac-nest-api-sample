@@ -3,6 +3,7 @@ import { ProductController } from './product.controller';
 import { ProductService } from '../services/product.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Product } from '../entities/product.entity';
+import { BadRequestException } from '@nestjs/common';
 
 describe('ProductController', () => {
   let controller: ProductController;
@@ -45,6 +46,13 @@ describe('ProductController', () => {
         { id: 1, name: 'Product1', price: 100 });
       expect(product).toEqual(productMock);
       expect(jest.spyOn(mockProductService, 'create')).toBeCalledTimes(1);
+    });
+  });
+
+  describe('create without body', () => {
+    it('should create return error', async () => {
+      expect(controller).toBeDefined();
+      expect(controller.create(null)).rejects.toThrowError(BadRequestException);
     });
   });
 

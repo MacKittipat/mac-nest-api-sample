@@ -44,4 +44,10 @@ describe('ProductController (e2e)', () => {
       .expect(201)
       .expect(productMock);
   });
+
+  it('POST /products without body', () => {
+    return request(app.getHttpServer())
+      .post('/products')
+      .expect(400);
+  });
 });

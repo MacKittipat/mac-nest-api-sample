@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post } from '@nestjs/common';
 import { ProductService } from '../services/product.service';
 import { ProductModel } from '../models/product.model';
 import { Product } from '../entities/product.entity';
@@ -10,12 +10,15 @@ export class ProductController {
   }
 
   @Get()
-  findAll() : Promise<Product[]> {
+  async findAll() : Promise<Product[]> {
     return this.productService.findAll();
   }
 
   @Post()
-  create(@Body() productModel: ProductModel) : Promise<Product> {
+  async create(@Body() productModel: ProductModel) : Promise<Product> {
+    if(productModel == null || Object.keys(productModel).length === 0) {
+      throw new BadRequestException();
+    }
     return this.productService.create(productModel);
   }
 }
